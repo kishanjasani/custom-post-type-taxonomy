@@ -22,7 +22,7 @@
 			<?php
 			if ( is_home() ) :
 				?>
-			<span class="alert label"><?php esc_html( get_post_type() ); ?></span>
+			<span class="alert label"><?php echo esc_html( get_post_type() ); ?></span>
 				<?php
 				endif;
 			?>

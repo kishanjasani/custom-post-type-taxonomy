@@ -21,6 +21,39 @@ function gourmet_artistry_exerpt($length) {
 }
 add_filter('excerpt_length','gourmet_artistry_exerpt', 999);
 
+function filter_course_terms( $term ) {
+	$args = array(
+		'posts_per_page' => 4,
+		'post_type'      => 'recipe',
+		'order'          => 'rand',
+		'tax_query'      => array(
+			array(
+				'taxonomy' => 'course',
+				'field'    => 'slug',
+				'terms'    => $term,
+			),
+		),
+	);
+
+	$query = new WP_Query( $args );
+	while ( $query->have_posts() ) {
+		$query->the_post();
+		?>
+		<div class="small-6 medium-3 column">
+			<div class="recipe">
+				<a href="<?php echo get_the_permalink($post->ID); ?>">
+					<?php echo get_the_post_thumbnail( $post->ID ); ?>
+				</a>
+				<h2 class="text-center">
+					<?php the_title(); ?>
+				</h2>
+			</div>
+		</div>
+		<?php
+	}
+	wp_reset_postdata();
+}
+
 function gourmet_artistry_setup() {
 	/*
 	 * Make theme available for translation.

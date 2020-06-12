@@ -14,7 +14,28 @@
 
 get_header(); ?>
 
-<?php get_template_part('template-parts/slider', 'entries'); ?>
+<?php get_template_part( 'template-parts/slider', 'entries' ); ?>
+
+<div class="row">
+	<ul class="menu">
+		<?php
+			$terms = get_terms(
+				array(
+					'taxonomy' => 'course',
+				),
+			);
+			foreach ( $terms as $term_item ) {
+				printf( "<li><a href='#%s'>%s</a></li>", esc_attr( $term_item->slug ), esc_html( $term_item->name ) );
+			}
+			?>
+	</ul>
+</div>
+
+<div class="row">
+	<?php
+		filter_course_terms( 'dessert' );
+	?>
+</div>
 
 <div class="row">
 	<div id="primary" class="content-area medium-8 columns">
@@ -23,17 +44,19 @@ get_header(); ?>
 		<?php
 		if ( have_posts() ) :
 
-			if ( is_home() && ! is_front_page() ) : ?>
+			if ( is_home() && ! is_front_page() ) :
+				?>
 				<header>
 					<h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
 
 				</header>
 
-			<?php
+				<?php
 			endif;
 
 			/* Start the Loop */
-			while ( have_posts() ) : the_post();
+			while ( have_posts() ) :
+				the_post();
 
 				/*
 				 * Include the Post-Format-specific template for the content.
@@ -50,12 +73,13 @@ get_header(); ?>
 
 			get_template_part( 'template-parts/content', 'none' );
 
-		endif; ?>
+		endif;
+		?>
 
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
 <?php
 get_sidebar();
-echo "</div>";
+echo '</div>';
 get_footer();
