@@ -115,6 +115,7 @@ add_action( 'widgets_init', 'gourmet_artistry_widgets_init' );
  */
 function gourmet_artistry_scripts() {
 	wp_enqueue_style('foundation-styles', get_template_directory_uri() . '/css/app.css'  );
+	wp_enqueue_style('banner', get_template_directory_uri() . '/css/banner.css'  );
 
 	wp_enqueue_style('foundation-icons', get_template_directory_uri() . '/css/foundation-icons.css'  );
 
@@ -162,3 +163,13 @@ require get_template_directory() . '/inc/jetpack.php';
  * Widgets
  */
 require get_template_directory() . '/inc/widgets.php';
+
+function print_recipe_posts( $query ) {
+	if ( ! is_admin() && $query->is_main_query() ) {
+		if ( is_home() ) {
+			$query->set( 'post_type', array( 'post', 'recipe' ) );
+		}
+	}
+}
+
+add_action( 'pre_get_posts', 'print_recipe_posts' );

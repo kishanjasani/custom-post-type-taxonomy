@@ -19,6 +19,13 @@
 			<div class="large-6 columns">
 				<?php the_post_thumbnail( 'entry' ); ?>
 			</div>
+			<?php
+			if ( is_home() ) :
+				?>
+			<span class="alert label"><?php esc_html( get_post_type() ); ?></span>
+				<?php
+				endif;
+			?>
 	<?php } ?>
 
 	<div class="<?php echo is_single() ? 'large-12' : 'large-6'; ?> columns">
@@ -44,7 +51,7 @@
 
 	<div class="entry-content">
 		<?php
-		if ( is_single() && 'recipe' === get_post_type() ) :
+		if ( 'recipe' === get_post_type() ) :
 			?>
 			<div class="taxonomies">
 				<div class="price-range">
