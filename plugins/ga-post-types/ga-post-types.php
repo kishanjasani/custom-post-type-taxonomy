@@ -201,6 +201,41 @@ function ga_meal_type_taxonomy() {
 }
 
 /**
+ * Add new taxonomy Price, hierarchical (like Category).
+ *
+ * @return void
+ */
+function ga_price_taxonomy() {
+
+	$labels = array(
+		'name'                  => _x( 'Price Range', 'taxonomy general name', 'ga' ),
+		'singular_name'         => _x( 'Price Range', 'taxonomy singular name', 'ga' ),
+		'search_items'          => __( 'Search Price Range', 'ga' ),
+		'all_items'             => __( 'All Price Range', 'ga' ),
+		'parent_item'           => __( 'Parent Price Range', 'ga' ),
+		'parent_item_colon'     => __( 'Parent Price Range:', 'ga' ),
+		'edit_item'             => __( 'Edit Price Range', 'ga' ),
+		'update_item'           => __( 'Update Price Range', 'ga' ),
+		'add_new_item'          => __( 'Add New Price Range', 'ga' ),
+		'new_item_name'         => __( 'New Price Range Name', 'ga' ),
+		'choose_from_most_used' => __( 'Choose from the most used Price Range', 'ga' ),
+		'not_found'             => __( 'No Price Range found.', 'ga' ),
+		'menu_name'             => __( 'Price Ranges', 'ga' ),
+	);
+
+	$args = array(
+		'hierarchical'      => true,
+		'labels'            => $labels,
+		'show_ui'           => true,
+		'show_admin_column' => true,
+		'query_var'         => true,
+		'rewrite'           => array( 'slug' => 'price-range' ),
+	);
+
+	register_taxonomy( 'price_range', 'recipe', $args );
+}
+
+/**
  * Add new taxonomy, Mood NOT hierarchical (like tags).
  *
  * @return void
@@ -241,3 +276,4 @@ add_action( 'init', 'ga_event_post_type' );
 add_action( 'init', 'ga_course_taxonomy' );
 add_action( 'init', 'ga_meal_type_taxonomy' );
 add_action( 'init', 'ga_mood_taxonomy' );
+add_action( 'init', 'ga_price_taxonomy' );
