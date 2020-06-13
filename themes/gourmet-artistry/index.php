@@ -16,26 +16,36 @@ get_header(); ?>
 
 <?php get_template_part( 'template-parts/slider', 'entries' ); ?>
 
-<div class="row">
-	<ul class="menu">
-		<?php
-			$terms = get_terms(
-				array(
-					'taxonomy' => 'course',
-				),
-			);
-			foreach ( $terms as $term_item ) {
-				printf( "<li><a href='#%s'>%s</a></li>", esc_attr( $term_item->slug ), esc_html( $term_item->name ) );
-			}
-			?>
+<div class="meal-recipes">
+	<h2 id="time" class="text-center">Make This For: </h2>
+	<ul id='meal-per-hour' class='row'>
 	</ul>
 </div>
 
-<div class="row">
-	<?php
-		filter_course_terms( 'dessert' );
-	?>
-</div>
+<h2 class="text-center"> Filter By Course: </h2>
+	<div id="filter">
+		<div class="menu-center">
+			<ul class="menu">
+				<?php
+					$terms = get_terms(
+						array(
+							'taxonomy' => 'course',
+						),
+					);
+					foreach ( $terms as $term_item ) {
+						printf( "<li><a href='#%s'>%s</a></li>", esc_attr( $term_item->slug ), esc_html( $term_item->name ) );
+					}
+					?>
+			</ul>
+		</div>
+		<div id="recipes">
+		<?php
+		foreach ( $terms as $term_item ) {
+			filter_course_terms( $term_item->slug );
+		}
+		?>
+		</div>
+	</div>
 
 <div class="row">
 	<div id="primary" class="content-area medium-8 columns">

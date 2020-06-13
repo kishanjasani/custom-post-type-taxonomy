@@ -21,6 +21,38 @@ function gourmet_artistry_exerpt($length) {
 }
 add_filter('excerpt_length','gourmet_artistry_exerpt', 999);
 
+function recipe_breakfast() {
+	$args = array(
+		'post_type'      => 'recipe',
+		'posts_per_page' => 3,
+		'orderby'       => 'rand',
+		'tax_query'      => array(
+			array(
+				'taxonomy' => 'meal-type',
+				'field'    => 'slug',
+				'terms'    => 'break-fast',
+			),
+		),
+	);
+
+	$query   = new WP_Query( $args );
+	$recipes = array();
+	while ( $query->have_posts() ) {
+		$query->the_post();
+		$recipes[] = array(
+			'id'    => get_the_ID(),
+			'name'  => get_the_title(),
+			'image' => get_the_post_thumbnail(),
+			'link'  => get_permalink(),
+		);
+	}
+	header("Content-type: application/json");
+	echo json_encode($recipes);
+	die();
+}
+add_action( 'wp_ajax_nopriv_recipe_breakfast', 'recipe_breakfast' );
+add_action( 'wp_ajax_recipe_breakfast', 'recipe_breakfast' );
+
 function filter_course_terms( $term ) {
 	$args = array(
 		'posts_per_page' => 4,
@@ -36,6 +68,7 @@ function filter_course_terms( $term ) {
 	);
 
 	$query = new WP_Query( $args );
+	echo '<div id= "' . $term . '" class="row">';
 	while ( $query->have_posts() ) {
 		$query->the_post();
 		?>
@@ -51,6 +84,7 @@ function filter_course_terms( $term ) {
 		</div>
 		<?php
 	}
+	echo '</div>';
 	wp_reset_postdata();
 }
 
@@ -160,6 +194,10 @@ function gourmet_artistry_scripts() {
 	wp_enqueue_script('foundation-js', get_template_directory_uri() . '/js/foundation.js', array('jquery'), '20151215', true );
   wp_enqueue_script('what-input', get_template_directory_uri() . '/js/what-input.min.js', array(), '20151215', true );
   wp_enqueue_script('app-js', get_template_directory_uri() . '/js/app.js', array(), '20151215', true );
+
+  wp_localize_script( 'app-js', 'ajax_data', array(
+	'ajax_url' => admin_url( 'admin-ajax.php' ),
+  ) );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
